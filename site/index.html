@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b1440">
 <title>Jogos — escolha um</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jogos">
 <meta name="description" content="Joguinhos multiplayer pelo celular: Forma Palavras e Pé na Tábua.">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,6 +35,12 @@
   .info h2 { font-size: 24px; color: #ffd23f; }
   .info p { margin: 6px 0 12px; line-height: 1.35; opacity: .92; }
   .btn { display: inline-block; padding: 10px 18px; border-radius: 12px; font-weight: 800; background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 4px 0 #b35c00; }
+  #instalar { margin-top: 22px; border: 0; font: inherit; cursor: pointer; }
+  .fundo { position: fixed; inset: 0; background: rgba(10,6,30,.8); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 5; }
+  .fundo[hidden] { display: none; }
+  .caixa { width: min(420px, 100%); background: #2a2163; border: 3px solid #ffd23f; border-radius: 18px; padding: 18px; }
+  .caixa h2 { color: #ffd23f; margin-bottom: 8px; } .caixa ol { margin: 8px 0 12px 20px; line-height: 1.6; }
+  .caixa button { border: 0; font: inherit; cursor: pointer; width: 100%; }
   footer { margin-top: 26px; opacity: .6; font-size: 13px; text-align: center; }
 </style>
 </head>
@@ -97,6 +110,35 @@
       </div>
     </a>
   </main>
+  <button id="instalar" class="btn" hidden>📲 Instalar na tela do celular</button>
+  <div id="comoInstalar" class="fundo" hidden>
+    <div class="caixa">
+      <h2>Instalar no iPhone</h2>
+      <ol>
+        <li>Abra esta página no <b>Safari</b>.</li>
+        <li>Toque no botão <b>Compartilhar</b> (quadrado com a setinha pra cima).</li>
+        <li>Escolha <b>Adicionar à Tela de Início</b> e toque em <b>Adicionar</b>.</li>
+      </ol>
+      <p>Pronto: abra pelo ícone <b>Jogos</b> e tudo roda sem a barra do navegador.</p>
+      <br><button class="btn" id="fecharComo">Entendi</button>
+    </div>
+  </div>
   <footer>Feito com carinho · cada jogo abre no seu próprio endereço</footer>
+  <script>
+    // vira "app": ícone na tela do celular, abre sem a barra do navegador
+    if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+    const instalado = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+    const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const btn = document.getElementById('instalar');
+    let pedido = null;
+    addEventListener('beforeinstallprompt', e => { e.preventDefault(); pedido = e; if (!instalado) btn.hidden = false; });
+    addEventListener('appinstalled', () => { btn.hidden = true; });
+    if (ios && !instalado) btn.hidden = false;
+    btn.onclick = async () => {
+      if (pedido) { pedido.prompt(); await pedido.userChoice; pedido = null; btn.hidden = true; }
+      else document.getElementById('comoInstalar').hidden = false;
+    };
+    document.getElementById('fecharComo').onclick = () => { document.getElementById('comoInstalar').hidden = true; };
+  </script>
 </body>
 </html>
