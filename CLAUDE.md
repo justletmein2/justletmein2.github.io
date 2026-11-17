@@ -5,7 +5,8 @@
   Cada jogo é um site separado, com repositório próprio:
   - Forma Palavras: `justletmein2/forma-palavras` → /forma-palavras/
   - Pé na Tábua: `justletmein2/pe-na-tabua` → /pe-na-tabua/
-- Não crie aqui pastas com o mesmo nome dos jogos (`forma-palavras`, `pe-na-tabua`):
+  - Cripta de Cristal: `justletmein2/cripta-de-cristal` → /cripta-de-cristal/
+- Não crie aqui pastas com o mesmo nome dos jogos (`forma-palavras`, `pe-na-tabua`, `cripta-de-cristal`):
   isso taparia o site do jogo.
 - Nunca coloque o Aura Battle (`duels-game`) aqui sem o Lucas pedir.
 - `main` é o que está no ar (publicado pelo GitHub Actions, pasta `site/`).
