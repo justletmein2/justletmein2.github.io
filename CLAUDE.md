@@ -7,7 +7,8 @@
   - Pé na Tábua: `justletmein2/pe-na-tabua` → /pe-na-tabua/
   - Cripta de Cristal: `justletmein2/cripta-de-cristal` → /cripta-de-cristal/
   - Torre Bamba: `justletmein2/torre-bamba` → /torre-bamba/
-- Não crie aqui pastas com o mesmo nome dos jogos (`forma-palavras`, `pe-na-tabua`, `cripta-de-cristal`, `torre-bamba`):
+  - Palhetada: `justletmein2/palhetada` → /palhetada/
+- Não crie aqui pastas com o mesmo nome dos jogos (`forma-palavras`, `pe-na-tabua`, `cripta-de-cristal`, `torre-bamba`, `palhetada`):
   isso taparia o site do jogo.
 - Nunca coloque o Aura Battle (`duels-game`) aqui sem o Lucas pedir.
 - `main` é o que está no ar (publicado pelo GitHub Actions, pasta `site/`).
