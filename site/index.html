@@ -12,47 +12,156 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Jogos">
-<meta name="description" content="Joguinhos multiplayer pelo celular: Forma Palavras, Pé na Tábua e Cripta de Cristal.">
+<meta name="description" content="Joguinhos multiplayer pelo celular: Palhetada, Torre Bamba, Forma Palavras, Pé na Tábua e Cripta de Cristal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    min-height: 100vh; font-family: "Trebuchet MS", system-ui, sans-serif; color: #fff;
-    background: #1b1440 radial-gradient(circle at 50% -20%, #3b2f80, #1b1440 60%);
-    padding: max(20px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
-    display: flex; flex-direction: column; align-items: center;
-  }
-  h1 { font-size: clamp(28px, 7vw, 42px); color: #ffd23f; text-shadow: 3px 3px 0 #d8312f, 6px 6px 0 #000; letter-spacing: 1px; text-align: center; margin: 10px 0 4px; }
-  .sub { color: #9fe6ff; font-weight: 700; margin-bottom: 22px; text-align: center; }
-  .jogos { display: grid; gap: 18px; width: min(860px, 100%); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-  a.jogo {
-    display: block; text-decoration: none; color: inherit; border-radius: 20px; overflow: hidden;
-    background: #2a2163; border: 3px solid #ffd23f; box-shadow: 0 8px 0 rgba(0,0,0,.35);
-    transition: transform .12s;
-  }
-  a.jogo:active { transform: translateY(4px); box-shadow: 0 4px 0 rgba(0,0,0,.35); }
-  a.jogo svg { display: block; width: 100%; height: auto; image-rendering: pixelated; }
-  .info { padding: 14px 16px 18px; }
-  .info h2 { font-size: 24px; color: #ffd23f; }
-  .info p { margin: 6px 0 12px; line-height: 1.35; opacity: .92; }
+  html { background: #1b1440; overflow-anchor: none; }
+  body { min-height: 100vh; font-family: Nunito, "Trebuchet MS", system-ui, sans-serif; color: #fff; -webkit-tap-highlight-color: transparent;
+    background: #1b1440 radial-gradient(circle at 50% -20%, #3b2f80, #1b1440 60%) no-repeat;
+    padding: 0 0 max(24px, env(safe-area-inset-bottom)); }
+  .pagina { width: min(560px, 100%); margin: 0 auto; }
+  h1 { font-size: 30px; font-weight: 900; color: #ffd23f; text-shadow: 3px 3px 0 #d8312f, 5px 5px 0 #000; letter-spacing: 1px; text-align: center;
+    padding: max(14px, env(safe-area-inset-top)) 16px 0; }
+
+  /* ---------- a sala (fica presa no topo e encolhe ao rolar) ---------- */
+  .sala { position: sticky; top: 0; z-index: 3; padding: 10px 14px 0; background: linear-gradient(#1b1440 70%, rgba(27,20,64,0)); }
+  .cena { position: relative; height: 270px; border-radius: 22px; overflow: hidden; border: 2px solid rgba(255,255,255,.12);
+    background: linear-gradient(#3a2a7a, #2a1f5c 72%, #241a4e 72%); transition: height .28s ease; }
+  .cena::before { content: ''; position: absolute; right: -60px; top: 10px; width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(143,107,255,.45), rgba(143,107,255,0) 65%); pointer-events: none; }
+  .rodape { position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 40px, rgba(0,0,0,.04) 40px 80px); }
+  /* TV */
+  #tv { position: absolute; right: 14px; top: 26px; width: 52%; max-width: 250px; transition: all .28s ease; }
+  .tv-caixa { background: #121022; border-radius: 14px; padding: 7px; box-shadow: 0 0 34px rgba(143,107,255,.55); }
+  #tvTela { aspect-ratio: 16 / 9; border-radius: 7px; overflow: hidden; background: #000; }
+  #tvTela svg { width: 100%; height: 100%; display: block; }
+  #tv.liga #tvTela { animation: liga .35s ease-out; }
+  @keyframes liga { 0% { transform: scaleY(.04); filter: brightness(3); } 60% { transform: scaleY(1); filter: brightness(1.6); } 100% { filter: none; } }
+  .tv-base { width: 36%; height: 16px; margin: 0 auto; background: #121022; border-radius: 0 0 8px 8px; }
+  .tv-linha { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  #tvNome { flex: 1; min-width: 0; font-weight: 900; font-size: 16px; color: #ffd23f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 0 rgba(0,0,0,.4); }
+  #tvJogar { flex: none; text-decoration: none; font-weight: 900; font-size: 15px; padding: 9px 14px; border-radius: 12px; background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 4px 0 #b35c00; }
+  #tvJogar:active { transform: translateY(3px); box-shadow: 0 1px 0 #b35c00; }
+  /* boneco */
+  #boneco { position: absolute; left: 18px; bottom: 26px; width: 118px; transition: all .28s ease; }
+  .respira { animation: respira 3.4s ease-in-out infinite; transform-origin: 50% 100%; }
+  @keyframes respira { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.015, 1.035); } }
+  #boneco.pulinho .respira { animation: pulinho .45s ease-out, respira 3.4s ease-in-out .45s infinite; }
+  @keyframes pulinho { 30% { transform: translateY(-12px) scale(1.04, .97); } 60% { transform: translateY(0) scale(1.03, .96); } }
+  #rosto { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; border: 4px solid #ffd23f; overflow: hidden; background: #e9e2ff; cursor: pointer; padding: 0;
+    box-shadow: 0 6px 0 rgba(0,0,0,.35), 0 0 0 6px rgba(255,210,63,.15); position: relative; }
+  #rostoSvg { position: absolute; inset: -6%; transition: transform .45s cubic-bezier(.3,1.4,.5,1); }
+  #rostoSvg svg { width: 100%; height: 100%; display: block; }
+  .lapis { position: absolute; right: -2px; bottom: 4px; width: 32px; height: 32px; border-radius: 50%; background: #ffd23f; color: #23164d; display: grid; place-items: center;
+    border: 3px solid #1b1440; pointer-events: none; }
+  #reacao { position: absolute; right: -14px; top: -12px; width: 40px; height: 40px; }
+  #reacao.pop, #balao.pop { animation: pop .32s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { from { transform: scale(.2); opacity: 0; } }
+  #balao { position: absolute; left: 12px; top: 12px; max-width: 46%; background: #fff; color: #23164d; font-weight: 900; font-size: 14px; line-height: 1.25;
+    padding: 9px 12px; border-radius: 16px 16px 16px 4px; box-shadow: 0 4px 0 rgba(0,0,0,.3); transform-origin: 20% 100%; z-index: 2; }
+  #nomeChip { position: absolute; left: 50%; bottom: -24px; transform: translateX(-50%); white-space: nowrap; font-weight: 900; font-size: 13px;
+    background: rgba(10,6,30,.7); padding: 3px 10px; border-radius: 999px; }
+  /* compacta */
+  .compacta .cena { height: 92px; }
+  body.rolou .pagina { padding-bottom: 178px; }
+  .compacta #boneco { width: 62px; left: 12px; bottom: 12px; }
+  .compacta #nomeChip, .compacta #balao, .compacta .lapis, .compacta .tv-base { display: none; }
+  .compacta #tv { top: 10px; width: 66%; max-width: none; right: 12px; }
+  .compacta .tv-caixa { display: flex; align-items: center; gap: 10px; padding: 6px; }
+  .compacta #tvTela { width: 104px; flex: none; }
+  .compacta .tv-linha { flex: 1; min-width: 0; margin: 0; flex-direction: column; align-items: stretch; gap: 4px; }
+  .compacta #tvJogar { text-align: center; padding: 6px 10px; font-size: 14px; }
+  .compacta #reacao { width: 26px; height: 26px; right: -10px; top: -8px; }
+
+  /* ---------- jogos ---------- */
+  .jogos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px 14px 0; }
+  a.jogo { position: relative; display: block; text-decoration: none; color: #fff; border-radius: 18px; overflow: hidden; background: #2a2163;
+    border: 2px solid rgba(255,255,255,.14); box-shadow: 0 5px 0 rgba(0,0,0,.35); transition: transform .15s, border-color .15s; }
+  a.jogo .arte { aspect-ratio: 16 / 9; }
+  a.jogo .arte svg { width: 100%; height: 100%; display: block; }
+  .rot { padding: 8px 10px 10px; }
+  .rot b { display: block; font-size: 16px; font-weight: 900; }
+  .rot small { display: block; font-size: 12px; font-weight: 700; opacity: .8; margin-top: 1px; }
+  .jogar { position: absolute; right: 8px; top: 8px; font-weight: 900; font-size: 13px; padding: 5px 10px; border-radius: 10px;
+    background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 3px 0 #b35c00; opacity: 0; transform: scale(.7); transition: all .18s; }
+  a.jogo.on { border: 3px solid #ffd23f; transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,.35), 0 0 0 4px rgba(255,210,63,.2); }
+  a.jogo.on .rot b { color: #ffd23f; }
+  a.jogo.on .jogar { opacity: 1; transform: none; }
+  a.jogo:active { transform: translateY(2px); }
+  .personalizar { font: inherit; color: #9fe6ff; font-weight: 900; font-size: 15px; border-radius: 18px; border: 2px dashed rgba(159,230,255,.5); background: rgba(159,230,255,.05);
+    min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+  .personalizar:active { transform: translateY(2px); }
+
   .btn { display: inline-block; padding: 10px 18px; border-radius: 12px; font-weight: 800; background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 4px 0 #b35c00; }
-  #instalar { margin-top: 22px; border: 0; font: inherit; cursor: pointer; }
+  #instalar { display: block; margin: 22px auto 0; border: 0; font: inherit; font-weight: 900; cursor: pointer; }
+  #instalar[hidden] { display: none; }
   .fundo { position: fixed; inset: 0; background: rgba(10,6,30,.8); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 5; }
   .fundo[hidden] { display: none; }
   .caixa { width: min(420px, 100%); background: #2a2163; border: 3px solid #ffd23f; border-radius: 18px; padding: 18px; }
   .caixa h2 { color: #ffd23f; margin-bottom: 8px; } .caixa ol { margin: 8px 0 12px 20px; line-height: 1.6; }
   .caixa button { border: 0; font: inherit; cursor: pointer; width: 100%; }
-  footer { margin-top: 26px; opacity: .6; font-size: 13px; text-align: center; }
+  footer { margin-top: 22px; opacity: .6; font-size: 13px; text-align: center; padding: 0 16px; }
+  @media (prefers-reduced-motion: reduce) { .respira, #boneco.pulinho .respira { animation: none; } }
 </style>
 </head>
 <body>
+<div class="pagina">
   <h1>Bora jogar?</h1>
-  <p class="sub">Escolha um jogo · dá pra jogar com os amigos pelo celular</p>
+  <div class="sala">
+    <div class="cena">
+      <div class="rodape"></div>
+      <div id="tv">
+        <div class="tv-caixa">
+          <div id="tvTela"></div>
+          <div class="tv-linha"><span id="tvNome"></span><a id="tvJogar" href="#">Jogar ▸</a></div>
+        </div>
+        <div class="tv-base"></div>
+      </div>
+      <div id="balao" hidden></div>
+      <div id="boneco">
+        <div class="respira">
+          <button id="rosto" aria-label="Personalizar seu boneco"><span id="rostoSvg"></span></button>
+        </div>
+        <span class="lapis" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+        <div id="reacao" hidden></div>
+        <span id="nomeChip"></span>
+      </div>
+    </div>
+  </div>
   <main class="jogos">
-    <a class="jogo" href="./forma-palavras/">
-      <svg viewBox="0 0 160 90" shape-rendering="crispEdges" aria-hidden="true">
+    <a class="jogo" href="./palhetada/" data-jogo="palhetada" data-nome="Palhetada">
+      <div class="arte"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 160 90" aria-hidden="true">
+        <defs><linearGradient id="phCeu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1f8f"/><stop offset="1" stop-color="#7b3fc4"/></linearGradient></defs>
+        <rect width="160" height="90" fill="url(#phCeu)"/>
+        <path d="M20 0 L30 0 L60 90 L0 90 Z" fill="#ff3d8b" opacity=".25"/><path d="M130 0 L140 0 L160 90 L100 90 Z" fill="#3aa0ff" opacity=".25"/>
+        <path d="M66 4 L94 4 L140 90 L20 90 Z" fill="#150a33"/>
+        <line x1="73" y1="4" x2="50" y2="90" stroke="#fff" stroke-opacity=".15"/><line x1="80" y1="4" x2="80" y2="90" stroke="#fff" stroke-opacity=".15"/><line x1="87" y1="4" x2="110" y2="90" stroke="#fff" stroke-opacity=".15"/>
+        <ellipse cx="75" cy="30" rx="5" ry="3" fill="#ff4d5e"/><ellipse cx="90" cy="44" rx="7" ry="4" fill="#3aa0ff"/><ellipse cx="62" cy="58" rx="8" ry="5" fill="#2fdc6b"/><ellipse cx="88" cy="62" rx="8" ry="5" fill="#ffd23f"/>
+        <ellipse cx="35" cy="80" rx="11" ry="6" fill="none" stroke="#2fdc6b" stroke-width="3"/><ellipse cx="65" cy="80" rx="11" ry="6" fill="none" stroke="#ff4d5e" stroke-width="3"/><ellipse cx="95" cy="80" rx="11" ry="6" fill="none" stroke="#ffd23f" stroke-width="3"/><ellipse cx="125" cy="80" rx="11" ry="6" fill="none" stroke="#3aa0ff" stroke-width="3"/>
+      </svg></div>
+      <div class="rot"><b>Palhetada</b><small>Toque no ritmo e faça combo</small></div>
+      <span class="jogar" aria-hidden="true">Jogar ▸</span>
+    </a>
+    <a class="jogo" href="./torre-bamba/" data-jogo="torre-bamba" data-nome="Torre Bamba">
+      <div class="arte"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 160 90" aria-hidden="true">
+        <defs><linearGradient id="tbCeu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7f63ff"/><stop offset="1" stop-color="#c7b8ff"/></linearGradient></defs>
+        <rect width="160" height="90" fill="url(#tbCeu)"/>
+        <circle cx="30" cy="62" r="14" fill="#fff" opacity=".25"/><circle cx="132" cy="54" r="18" fill="#fff" opacity=".25"/>
+        <line x1="0" y1="12" x2="160" y2="12" stroke="#fff" stroke-width="2" stroke-dasharray="7 5"/>
+        <rect x="58" y="74" width="64" height="16" rx="3" fill="#8a5a2b"/><rect x="56" y="72" width="68" height="5" rx="2" fill="#4cdb7a"/>
+        <rect x="66" y="60" width="14" height="14" rx="3" fill="#3ad1ff" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="80" y="60" width="14" height="14" rx="3" fill="#3ad1ff" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="94" y="60" width="14" height="14" rx="3" fill="#3ad1ff" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="73" y="46" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="87" y="46" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="73" y="32" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="87" y="32" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="80" y="18" width="14" height="14" rx="3" fill="#ff5f6d" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(-5 87 25)"/><rect x="94" y="18" width="14" height="14" rx="3" fill="#ff5f6d" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(-5 101 25)"/><rect x="84" y="3" width="14" height="14" rx="3" fill="#4cdb7a" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(9 91 10)"/><rect x="32" y="14" width="14" height="14" rx="3" fill="#b46bff" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(20 39 21)"/><rect x="118" y="26" width="14" height="14" rx="3" fill="#ff9f40" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(-25 125 33)"/>
+      </svg></div>
+      <div class="rot"><b>Torre Bamba</b><small>Empilhe sem derrubar</small></div>
+      <span class="jogar" aria-hidden="true">Jogar ▸</span>
+    </a>
+    <a class="jogo" href="./forma-palavras/" data-jogo="forma-palavras" data-nome="Forma Palavras">
+      <div class="arte"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 160 90" aria-hidden="true">
         <rect width="160" height="90" fill="#e9e2ff"/>
         <g font-family="Trebuchet MS, sans-serif" font-weight="900" font-size="11" text-anchor="middle">
-          <!-- quadro de letras -->
+          
           <g transform="translate(38 9)">
             <rect x="-4" y="-4" width="92" height="80" rx="6" fill="#8f6bff"/>
             <g fill="#fff">
@@ -70,16 +179,12 @@
             <path d="M32 26 L54 26 L54 62" fill="none" stroke="#ff5fa2" stroke-width="3" stroke-linecap="round" opacity=".8"/>
           </g>
         </g>
-      </svg>
-      <div class="info">
-        <h2>Forma Palavras</h2>
-        <p>Todo mundo vê o mesmo quadro de letras e tem 3 minutos pra achar o máximo de palavras.</p>
-        <span class="btn">Jogar ▸</span>
-      </div>
+      </svg></div>
+      <div class="rot"><b>Forma Palavras</b><small>Ache palavras em 3 minutos</small></div>
+      <span class="jogar" aria-hidden="true">Jogar ▸</span>
     </a>
-
-    <a class="jogo" href="./pe-na-tabua/">
-      <svg viewBox="0 0 160 90" shape-rendering="crispEdges" aria-hidden="true">
+    <a class="jogo" href="./pe-na-tabua/" data-jogo="pe-na-tabua" data-nome="Pé na Tábua">
+      <div class="arte"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 160 90" aria-hidden="true">
         <defs><linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8fe8"/><stop offset="1" stop-color="#bfe9ff"/></linearGradient></defs>
         <rect width="160" height="46" fill="url(#ceu)"/>
         <rect x="128" y="8" width="12" height="12" fill="#fff6b0"/>
@@ -89,10 +194,10 @@
         <path d="M70 46 L90 46 L150 90 L10 90Z" fill="#d8312f"/>
         <path d="M72 46 L88 46 L140 90 L20 90Z" fill="#70747e"/>
         <path d="M79 50 h2 v5 h-2Z M78 60 h4 v7 h-4Z M77 73 h6 v10 h-6Z" fill="#fff"/>
-        <!-- coqueiros -->
+        
         <g fill="#8a5a2e"><rect x="20" y="30" width="3" height="22"/><rect x="134" y="30" width="3" height="24"/></g>
         <g fill="#2b9145"><rect x="12" y="27" width="20" height="4"/><rect x="16" y="24" width="12" height="3"/><rect x="126" y="27" width="20" height="4"/><rect x="130" y="24" width="12" height="3"/></g>
-        <!-- carro -->
+        
         <g transform="translate(60 64)">
           <rect x="1" y="20" width="38" height="3" fill="rgba(0,0,0,.3)"/>
           <rect x="2" y="13" width="8" height="9" fill="#151515"/><rect x="30" y="13" width="8" height="9" fill="#151515"/>
@@ -102,15 +207,12 @@
           <rect x="7" y="1" width="9" height="5" fill="#4a2f22"/><rect x="23" y="1" width="9" height="5" fill="#4a2f22"/>
           <rect x="8" y="-5" width="7" height="7" fill="#4a2c17"/>
         </g>
-      </svg>
-      <div class="info">
-        <h2>Pé na Tábua</h2>
-        <p>Corrida estilo videogame antigo: o celular vira volante. Desvie de lava, dragão e caminhão tombado!</p>
-        <span class="btn">Jogar ▸</span>
-      </div>
+      </svg></div>
+      <div class="rot"><b>Pé na Tábua</b><small>Corrida com o celular de volante</small></div>
+      <span class="jogar" aria-hidden="true">Jogar ▸</span>
     </a>
-    <a class="jogo" href="./cripta-de-cristal/">
-      <svg viewBox="0 0 160 90" aria-hidden="true" style="image-rendering:auto">
+    <a class="jogo" href="./cripta-de-cristal/" data-jogo="cripta-de-cristal" data-nome="Cripta de Cristal">
+      <div class="arte"><svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 160 90" aria-hidden="true">
         <defs>
           <linearGradient id="ccCeu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07051a"/><stop offset="1" stop-color="#4a2381"/></linearGradient>
           <linearGradient id="ccCr" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#3b1d8f"/><stop offset=".5" stop-color="#7c4dff"/><stop offset="1" stop-color="#e3d0ff"/></linearGradient>
@@ -122,7 +224,7 @@
           <path d="M14 70 L14 38 L22 24 L30 38 L30 70Z"/><path d="M128 70 L128 44 L136 32 L144 44 L144 70Z"/><path d="M40 70 L40 50 L45 42 L50 50 L50 70Z"/>
         </g>
         <rect y="70" width="160" height="20" fill="#2b2547"/><rect y="70" width="160" height="2" fill="#8f7bd8"/>
-        <!-- herói com espada -->
+        
         <g transform="translate(70 70)" stroke="#140d22" stroke-width="1.2" stroke-linecap="round">
           <path d="M-6 -28 Q-14 -16 -16 -4 L-8 -6 Z" fill="#2f54c8"/>
           <line x1="-2" y1="-12" x2="-5" y2="0" stroke="#56607a" stroke-width="3"/><line x1="2" y1="-12" x2="5" y2="0" stroke="#56607a" stroke-width="3"/>
@@ -131,50 +233,21 @@
           <line x1="3" y1="-25" x2="12" y2="-21" stroke="#c9d3e6" stroke-width="2.5"/>
           <path d="M12 -21 L34 -36" stroke="#fff" stroke-width="2.2"/>
         </g>
-        <!-- monstro -->
+        
         <g transform="translate(118 70)" stroke="#140d22" stroke-width="1.2">
           <path d="M-10 0 L-12 -22 L-4 -30 L8 -30 L12 -22 L10 0Z" fill="#4a4566"/>
           <path d="M-8 -26 L-12 -40 L-4 -28Z" fill="#b48cff"/><circle cx="2" cy="-18" r="3" fill="#ff4060"/>
         </g>
-      </svg>
-      <div class="info">
-        <h2>Cripta de Cristal</h2>
-        <p>Aventura de ação em masmorras de cristal: escolha seu herói e desça junto com os amigos. Cada partida é diferente!</p>
-        <span class="btn">Jogar ▸</span>
-      </div>
+      </svg></div>
+      <div class="rot"><b>Cripta de Cristal</b><small>Aventura de fantasia</small></div>
+      <span class="jogar" aria-hidden="true">Jogar ▸</span>
     </a>
-    <a class="jogo" href="./torre-bamba/">
-      <svg viewBox="0 0 160 90" aria-hidden="true" style="image-rendering:auto">
-        <defs><linearGradient id="tbCeu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7f63ff"/><stop offset="1" stop-color="#c7b8ff"/></linearGradient></defs>
-        <rect width="160" height="90" fill="url(#tbCeu)"/>
-        <circle cx="30" cy="62" r="14" fill="#fff" opacity=".25"/><circle cx="132" cy="54" r="18" fill="#fff" opacity=".25"/>
-        <line x1="0" y1="12" x2="160" y2="12" stroke="#fff" stroke-width="2" stroke-dasharray="7 5"/>
-        <rect x="58" y="74" width="64" height="16" rx="3" fill="#8a5a2b"/><rect x="56" y="72" width="68" height="5" rx="2" fill="#4cdb7a"/>
-        <rect x="66" y="60" width="14" height="14" rx="3" fill="#3ad1ff" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="80" y="60" width="14" height="14" rx="3" fill="#3ad1ff" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="94" y="60" width="14" height="14" rx="3" fill="#3ad1ff" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="73" y="46" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="87" y="46" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="73" y="32" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="87" y="32" width="14" height="14" rx="3" fill="#ffd23f" stroke="rgba(0,0,0,.25)" stroke-width="1"/><rect x="80" y="18" width="14" height="14" rx="3" fill="#ff5f6d" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(-5 87 25)"/><rect x="94" y="18" width="14" height="14" rx="3" fill="#ff5f6d" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(-5 101 25)"/><rect x="84" y="3" width="14" height="14" rx="3" fill="#4cdb7a" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(9 91 10)"/><rect x="32" y="14" width="14" height="14" rx="3" fill="#b46bff" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(20 39 21)"/><rect x="118" y="26" width="14" height="14" rx="3" fill="#ff9f40" stroke="rgba(0,0,0,.25)" stroke-width="1" transform="rotate(-25 125 33)"/>
-      </svg>
-      <div class="info">
-        <h2>Torre Bamba</h2>
-        <p>Empilhe as peças e segure a torre de pé até a linha de chegada. Ela balança de verdade!</p>
-        <span class="btn">Jogar ▸</span>
-      </div>
-    </a>
-    <a class="jogo" href="./palhetada/">
-      <svg viewBox="0 0 160 90" aria-hidden="true" style="image-rendering:auto">
-        <defs><linearGradient id="phCeu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1f8f"/><stop offset="1" stop-color="#7b3fc4"/></linearGradient></defs>
-        <rect width="160" height="90" fill="url(#phCeu)"/>
-        <path d="M20 0 L30 0 L60 90 L0 90 Z" fill="#ff3d8b" opacity=".25"/><path d="M130 0 L140 0 L160 90 L100 90 Z" fill="#3aa0ff" opacity=".25"/>
-        <path d="M66 4 L94 4 L140 90 L20 90 Z" fill="#150a33"/>
-        <line x1="73" y1="4" x2="50" y2="90" stroke="#fff" stroke-opacity=".15"/><line x1="80" y1="4" x2="80" y2="90" stroke="#fff" stroke-opacity=".15"/><line x1="87" y1="4" x2="110" y2="90" stroke="#fff" stroke-opacity=".15"/>
-        <ellipse cx="75" cy="30" rx="5" ry="3" fill="#ff4d5e"/><ellipse cx="90" cy="44" rx="7" ry="4" fill="#3aa0ff"/><ellipse cx="62" cy="58" rx="8" ry="5" fill="#2fdc6b"/><ellipse cx="88" cy="62" rx="8" ry="5" fill="#ffd23f"/>
-        <ellipse cx="35" cy="80" rx="11" ry="6" fill="none" stroke="#2fdc6b" stroke-width="3"/><ellipse cx="65" cy="80" rx="11" ry="6" fill="none" stroke="#ff4d5e" stroke-width="3"/><ellipse cx="95" cy="80" rx="11" ry="6" fill="none" stroke="#ffd23f" stroke-width="3"/><ellipse cx="125" cy="80" rx="11" ry="6" fill="none" stroke="#3aa0ff" stroke-width="3"/>
-      </svg>
-      <div class="info">
-        <h2>Palhetada</h2>
-        <p>Toque as notas no ritmo da música, faça combo e dispute quem é a estrela do palco.</p>
-        <span class="btn">Jogar ▸</span>
-      </div>
-    </a>
+    <button class="personalizar" id="btnPersonalizar2" type="button">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      Personalizar boneco
+    </button>
   </main>
+  <button id="btnPersonalizar" hidden></button>
   <button id="instalar" class="btn" hidden>📲 Instalar na tela do celular</button>
   <div id="comoInstalar" class="fundo" hidden>
     <div class="caixa">
@@ -188,22 +261,24 @@
       <br><button class="btn" id="fecharComo">Entendi</button>
     </div>
   </div>
-  <footer>Feito com carinho · cada jogo abre no seu próprio endereço</footer>
-  <script>
-    // vira "app": ícone na tela do celular, abre sem a barra do navegador
-    if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
-    const instalado = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
-    const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const btn = document.getElementById('instalar');
-    let pedido = null;
-    addEventListener('beforeinstallprompt', e => { e.preventDefault(); pedido = e; if (!instalado) btn.hidden = false; });
-    addEventListener('appinstalled', () => { btn.hidden = true; });
-    if (ios && !instalado) btn.hidden = false;
-    btn.onclick = async () => {
-      if (pedido) { pedido.prompt(); await pedido.userChoice; pedido = null; btn.hidden = true; }
-      else document.getElementById('comoInstalar').hidden = false;
-    };
-    document.getElementById('fecharComo').onclick = () => { document.getElementById('comoInstalar').hidden = true; };
-  </script>
+  <footer>Toque num jogo pra ver na TV · toque de novo pra jogar</footer>
+</div>
+<script type="module" src="hub.js"></script>
+<script>
+  // vira "app": ícone na tela do celular, abre sem a barra do navegador
+  if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  const instalado = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const btn = document.getElementById('instalar');
+  let pedido = null;
+  addEventListener('beforeinstallprompt', e => { e.preventDefault(); pedido = e; if (!instalado) btn.hidden = false; });
+  addEventListener('appinstalled', () => { btn.hidden = true; });
+  if (ios && !instalado) btn.hidden = false;
+  btn.onclick = async () => {
+    if (pedido) { pedido.prompt(); await pedido.userChoice; pedido = null; btn.hidden = true; }
+    else document.getElementById('comoInstalar').hidden = false;
+  };
+  document.getElementById('fecharComo').onclick = () => { document.getElementById('comoInstalar').hidden = true; };
+</script>
 </body>
 </html>

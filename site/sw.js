@@ -1,7 +1,7 @@
 // Service worker do portal: só cuida da página inicial (pra abrir mesmo sem internet).
 // Não mexe em nada dos jogos (/forma-palavras/, /pe-na-tabua/), que têm o próprio jeito de funcionar.
-const CACHE = 'portal-v1';
-const ARQUIVOS = ['/', '/index.html', '/manifest.json', '/icone-192.png', '/icone-512.png', '/apple-touch-icon.png'];
+const CACHE = 'portal-v2';
+const ARQUIVOS = ['/', '/index.html', '/hub.js', '/manifest.json', '/icone-192.png', '/icone-512.png', '/apple-touch-icon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
