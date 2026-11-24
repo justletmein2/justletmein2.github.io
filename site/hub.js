@@ -157,6 +157,16 @@ $('btnPersonalizar2').onclick = personalizar;
 $('rosto').onclick = personalizar;
 
 let vivoMod = null;
+// cores escolhidas pelo jogador (Céu, Areia ou Doce): o mesmo seletor do Pé na Tábua
+async function cores() {
+  let P = null;
+  try { P = await import('/forma-palavras/js/paleta.js'); } catch { try { P = await import('./paleta.js'); } catch {} }
+  if (!P) { $('btnCores').hidden = true; return; }
+  P.aplicarPaleta();
+  P.montarSeletor($('seletorCores'));
+  $('btnCores').onclick = () => { const p = $('painelCores'); p.hidden = !p.hidden; $('btnCores').setAttribute('aria-expanded', String(!p.hidden)); };
+}
+cores();
 async function iniciar() {
   try { perfil = { ...perfil, ...JSON.parse(localStorage.getItem(LOCAL_K) || '{}') }; } catch {}
   try { AV = await import('/forma-palavras/js/avatar.js'); } catch { try { AV = await import('./avatar.js'); } catch { AV = null; } }

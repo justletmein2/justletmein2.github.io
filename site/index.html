@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1b1440">
+<meta name="theme-color" content="#eaf5ff">
 <title>Jogos — escolha um</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon-32.png">
@@ -15,55 +15,65 @@
 <meta name="description" content="Joguinhos multiplayer pelo celular: Torre Bamba, Forma Palavras, Pé na Tábua e Cripta de Cristal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Nunito:wght@700;800;900&display=swap">
 <style>
+  :root { --p-fundo1: #eaf5ff; --p-fundo2: #cfe6ff; --p-painel: #ffffff; --p-texto: #12233f; --p-suave: #56667f; --p-a1: #2f7bf6; --p-a2: #ff8a3d;
+    --p-sombra: #bcdcff; --p-borda: rgba(18,35,63,.13); --p-cena1: #d7ebff; --p-cena2: #b9d8fb; --p-btn1: #ff9a52; --p-btn2: #ff7a2e; --p-btn-txt: #fff; --p-btn-sombra: #c0561a; --p-sec: #e3efff; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { background: #1b1440; overflow-anchor: none; }
-  body { min-height: 100vh; font-family: Nunito, "Trebuchet MS", system-ui, sans-serif; color: #fff; -webkit-tap-highlight-color: transparent;
-    background: #1b1440 radial-gradient(circle at 50% -20%, #3b2f80, #1b1440 60%) no-repeat;
-    padding: 0 0 max(24px, env(safe-area-inset-bottom)); }
+  html { background: var(--p-fundo1); overflow-anchor: none; }
+  body { min-height: 100vh; font-family: Nunito, system-ui, sans-serif; color: var(--p-texto); -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(170deg, var(--p-fundo1), var(--p-fundo2)) fixed; padding: 0 0 max(24px, env(safe-area-inset-bottom)); transition: background .3s; }
   .pagina { width: min(560px, 100%); margin: 0 auto; }
-  h1 { font-size: 30px; font-weight: 900; color: #ffd23f; text-shadow: 3px 3px 0 #d8312f, 5px 5px 0 #000; letter-spacing: 1px; text-align: center;
-    padding: max(14px, env(safe-area-inset-top)) 16px 0; }
+  .cabeca { position: relative; padding: max(12px, env(safe-area-inset-top)) 16px 0; text-align: center; }
+  h1 { font-family: "Baloo 2", Nunito, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.1; color: var(--p-a1); text-shadow: 3px 3px 0 var(--p-sombra);
+    display: inline-flex; white-space: nowrap; }
+  h1 span { display: inline-block; animation: ola 1.9s ease-in-out infinite; animation-delay: calc(var(--i) * .07s); }
+  @keyframes ola { 0%, 60%, 100% { transform: translateY(0) rotate(0); } 20% { transform: translateY(-10px) rotate(-6deg); } 35% { transform: translateY(2px) rotate(3deg); } }
+  #btnCores { position: absolute; right: 12px; top: max(14px, env(safe-area-inset-top)); width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--p-borda);
+    background: var(--p-painel); color: var(--p-a1); display: grid; place-items: center; cursor: pointer; box-shadow: 0 3px 0 var(--p-borda); }
+  #painelCores { margin: 8px 14px 0; padding: 10px; border-radius: 16px; background: var(--p-painel); border: 2px solid var(--p-borda); text-align: center; }
+  #painelCores[hidden] { display: none; }
+  #painelCores p { font-weight: 900; font-size: 13px; color: var(--p-suave); margin-bottom: 8px; }
 
   /* ---------- a sala (fica presa no topo e encolhe ao rolar) ---------- */
-  .sala { position: sticky; top: 0; z-index: 3; padding: 10px 14px 0; background: linear-gradient(#1b1440 70%, rgba(27,20,64,0)); }
-  .cena { position: relative; height: 270px; border-radius: 22px; overflow: hidden; border: 2px solid rgba(255,255,255,.12);
-    background: linear-gradient(#3a2a7a, #2a1f5c 72%, #241a4e 72%); transition: height .28s ease; }
+  .sala { position: sticky; top: 0; z-index: 3; padding: 10px 14px 0; background: linear-gradient(var(--p-fundo1) 70%, transparent); }
+  .cena { position: relative; height: 270px; border-radius: 22px; overflow: hidden; border: 2px solid var(--p-borda);
+    background: linear-gradient(var(--p-cena1), var(--p-cena2) 72%, color-mix(in srgb, var(--p-cena2) 80%, #000) 72%); transition: height .28s ease; }
   .cena::before { content: ''; position: absolute; right: -60px; top: 10px; width: 320px; height: 320px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(143,107,255,.45), rgba(143,107,255,0) 65%); pointer-events: none; }
-  .rodape { position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 40px, rgba(0,0,0,.04) 40px 80px); }
+    background: radial-gradient(circle, color-mix(in srgb, var(--p-a1) 30%, transparent), transparent 65%); pointer-events: none; }
+  .rodape { position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 40px, rgba(0,0,0,.03) 40px 80px); }
   /* TV */
   #tv { position: absolute; right: 14px; top: 26px; width: 52%; max-width: 250px; transition: all .28s ease; }
-  .tv-caixa { background: #121022; border-radius: 14px; padding: 7px; box-shadow: 0 0 34px rgba(143,107,255,.55); }
+  .tv-caixa { background: #121022; border-radius: 14px; padding: 7px; box-shadow: 0 10px 24px rgba(0,0,0,.25), 0 0 30px color-mix(in srgb, var(--p-a1) 45%, transparent); }
   #tvTela { aspect-ratio: 16 / 9; border-radius: 7px; overflow: hidden; background: #000; }
   #tvTela svg { width: 100%; height: 100%; display: block; }
   #tv.liga #tvTela { animation: liga .35s ease-out; }
   @keyframes liga { 0% { transform: scaleY(.04); filter: brightness(3); } 60% { transform: scaleY(1); filter: brightness(1.6); } 100% { filter: none; } }
   .tv-base { width: 36%; height: 16px; margin: 0 auto; background: #121022; border-radius: 0 0 8px 8px; }
   .tv-linha { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-  #tvNome { flex: 1; min-width: 0; font-weight: 900; font-size: 16px; color: #ffd23f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 0 rgba(0,0,0,.4); }
-  #tvJogar { flex: none; text-decoration: none; font-weight: 900; font-size: 15px; padding: 9px 14px; border-radius: 12px; background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 4px 0 #b35c00; }
-  #tvJogar:active { transform: translateY(3px); box-shadow: 0 1px 0 #b35c00; }
+  #tvNome { flex: 1; min-width: 0; font-weight: 900; font-size: 16px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #tvJogar, .btn { text-decoration: none; font-weight: 900; border-radius: 12px; background: linear-gradient(var(--p-btn1), var(--p-btn2)); color: var(--p-btn-txt); box-shadow: 0 4px 0 var(--p-btn-sombra); }
+  #tvJogar { flex: none; font-size: 15px; padding: 9px 14px; }
+  #tvJogar:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--p-btn-sombra); }
   /* boneco */
   #boneco { position: absolute; left: 18px; bottom: 26px; width: 118px; transition: all .28s ease; }
   .respira { animation: respira 3.4s ease-in-out infinite; transform-origin: 50% 100%; }
   @keyframes respira { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.015, 1.035); } }
   #boneco.pulinho .respira { animation: pulinho .45s ease-out, respira 3.4s ease-in-out .45s infinite; }
   @keyframes pulinho { 30% { transform: translateY(-12px) scale(1.04, .97); } 60% { transform: translateY(0) scale(1.03, .96); } }
-  #rosto { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; border: 4px solid #ffd23f; overflow: hidden; background: #e9e2ff; cursor: pointer; padding: 0;
-    box-shadow: 0 6px 0 rgba(0,0,0,.35), 0 0 0 6px rgba(255,210,63,.15); position: relative; }
+  #rosto { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; border: 4px solid var(--p-a1); overflow: hidden; background: #e9e2ff; cursor: pointer; padding: 0;
+    box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 0 0 6px color-mix(in srgb, var(--p-a1) 18%, transparent); position: relative; }
   #rostoSvg { position: absolute; inset: -6%; transition: transform .45s cubic-bezier(.3,1.4,.5,1); }
   #rostoSvg svg { width: 100%; height: 100%; display: block; }
-  .lapis { position: absolute; right: -2px; bottom: 4px; width: 32px; height: 32px; border-radius: 50%; background: #ffd23f; color: #23164d; display: grid; place-items: center;
-    border: 3px solid #1b1440; pointer-events: none; }
+  .lapis { position: absolute; right: -2px; bottom: 4px; width: 32px; height: 32px; border-radius: 50%; background: var(--p-a1); color: #fff; display: grid; place-items: center;
+    border: 3px solid var(--p-painel); pointer-events: none; }
   #reacao { position: absolute; right: -14px; top: -12px; width: 40px; height: 40px; }
   #reacao.pop, #balao.pop { animation: pop .32s cubic-bezier(.3,1.6,.5,1); }
   @keyframes pop { from { transform: scale(.2); opacity: 0; } }
-  #balao { position: absolute; left: 12px; top: 12px; max-width: 46%; background: #fff; color: #23164d; font-weight: 900; font-size: 14px; line-height: 1.25;
-    padding: 9px 12px; border-radius: 16px 16px 16px 4px; box-shadow: 0 4px 0 rgba(0,0,0,.3); transform-origin: 20% 100%; z-index: 2; }
-  #nomeChip { position: absolute; left: 50%; bottom: -24px; transform: translateX(-50%); white-space: nowrap; font-weight: 900; font-size: 13px;
-    background: rgba(10,6,30,.7); padding: 3px 10px; border-radius: 999px; }
+  #balao { position: absolute; left: 12px; top: 12px; max-width: 46%; background: #fff; color: var(--p-texto); font-weight: 900; font-size: 14px; line-height: 1.25;
+    padding: 9px 12px; border-radius: 16px 16px 16px 4px; box-shadow: 0 4px 0 rgba(0,0,0,.12); border: 2px solid var(--p-borda); transform-origin: 20% 100%; z-index: 2; }
+  #nomeChip { position: absolute; left: 50%; bottom: -24px; transform: translateX(-50%); white-space: nowrap; font-weight: 900; font-size: 13px; color: #fff;
+    background: color-mix(in srgb, var(--p-texto) 85%, transparent); padding: 3px 10px; border-radius: 999px; }
   /* compacta */
   .compacta .cena { height: 92px; }
   body.rolou .pagina { padding-bottom: 178px; }
@@ -78,38 +88,42 @@
 
   /* ---------- jogos ---------- */
   .jogos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px 14px 0; }
-  a.jogo { position: relative; display: block; text-decoration: none; color: #fff; border-radius: 18px; overflow: hidden; background: #2a2163;
-    border: 2px solid rgba(255,255,255,.14); box-shadow: 0 5px 0 rgba(0,0,0,.35); transition: transform .15s, border-color .15s; }
+  a.jogo { position: relative; display: block; text-decoration: none; color: var(--p-texto); border-radius: 18px; overflow: hidden; background: var(--p-painel);
+    border: 2px solid var(--p-borda); box-shadow: 0 5px 0 var(--p-borda); transition: transform .15s, border-color .15s; }
   a.jogo .arte { aspect-ratio: 16 / 9; }
   a.jogo .arte svg { width: 100%; height: 100%; display: block; }
   .rot { padding: 8px 10px 10px; }
   .rot b { display: block; font-size: 16px; font-weight: 900; }
-  .rot small { display: block; font-size: 12px; font-weight: 700; opacity: .8; margin-top: 1px; }
+  .rot small { display: block; font-size: 12px; font-weight: 700; color: var(--p-suave); margin-top: 1px; }
   .jogar { position: absolute; right: 8px; top: 8px; font-weight: 900; font-size: 13px; padding: 5px 10px; border-radius: 10px;
-    background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 3px 0 #b35c00; opacity: 0; transform: scale(.7); transition: all .18s; }
-  a.jogo.on { border: 3px solid #ffd23f; transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0,0,0,.35), 0 0 0 4px rgba(255,210,63,.2); }
-  a.jogo.on .rot b { color: #ffd23f; }
+    background: linear-gradient(var(--p-btn1), var(--p-btn2)); color: var(--p-btn-txt); box-shadow: 0 3px 0 var(--p-btn-sombra); opacity: 0; transform: scale(.7); transition: all .18s; }
+  a.jogo.on { border: 3px solid var(--p-a1); transform: translateY(-3px); box-shadow: 0 8px 0 var(--p-borda), 0 0 0 4px color-mix(in srgb, var(--p-a1) 22%, transparent); }
+  a.jogo.on .rot b { color: var(--p-a1); }
   a.jogo.on .jogar { opacity: 1; transform: none; }
   a.jogo:active { transform: translateY(2px); }
-  .personalizar { font: inherit; color: #9fe6ff; font-weight: 900; font-size: 15px; border-radius: 18px; border: 2px dashed rgba(159,230,255,.5); background: rgba(159,230,255,.05);
-    min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+  .personalizar { font: inherit; color: var(--p-a1); font-weight: 900; font-size: 15px; border-radius: 18px; border: 2px dashed color-mix(in srgb, var(--p-a1) 55%, transparent);
+    background: color-mix(in srgb, var(--p-a1) 6%, transparent); min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
   .personalizar:active { transform: translateY(2px); }
 
-  .btn { display: inline-block; padding: 10px 18px; border-radius: 12px; font-weight: 800; background: linear-gradient(#ffd23f, #ff9f1c); color: #3a1d00; box-shadow: 0 4px 0 #b35c00; }
+  .btn { display: inline-block; padding: 10px 18px; }
   #instalar { display: block; margin: 22px auto 0; border: 0; font: inherit; font-weight: 900; cursor: pointer; }
   #instalar[hidden] { display: none; }
-  .fundo { position: fixed; inset: 0; background: rgba(10,6,30,.8); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 5; }
+  .fundo { position: fixed; inset: 0; background: rgba(10,6,30,.55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 5; }
   .fundo[hidden] { display: none; }
-  .caixa { width: min(420px, 100%); background: #2a2163; border: 3px solid #ffd23f; border-radius: 18px; padding: 18px; }
-  .caixa h2 { color: #ffd23f; margin-bottom: 8px; } .caixa ol { margin: 8px 0 12px 20px; line-height: 1.6; }
+  .caixa { width: min(420px, 100%); background: var(--p-painel); color: var(--p-texto); border: 3px solid var(--p-a1); border-radius: 18px; padding: 18px; }
+  .caixa h2 { color: var(--p-a1); margin-bottom: 8px; } .caixa ol { margin: 8px 0 12px 20px; line-height: 1.6; }
   .caixa button { border: 0; font: inherit; cursor: pointer; width: 100%; }
-  footer { margin-top: 22px; opacity: .6; font-size: 13px; text-align: center; padding: 0 16px; }
-  @media (prefers-reduced-motion: reduce) { .respira, #boneco.pulinho .respira { animation: none; } }
+  footer { margin-top: 22px; color: var(--p-suave); font-size: 13px; font-weight: 700; text-align: center; padding: 0 16px; }
+  @media (prefers-reduced-motion: reduce) { .respira, #boneco.pulinho .respira, h1 span { animation: none; } }
 </style>
 </head>
 <body>
 <div class="pagina">
-  <h1>Bora jogar?</h1>
+  <div class="cabeca">
+    <h1 aria-label="Bora jogar?"><span style="--i:0">B</span><span style="--i:1">o</span><span style="--i:2">r</span><span style="--i:3">a</span><span style="--i:4">&nbsp;</span><span style="--i:5">j</span><span style="--i:6">o</span><span style="--i:7">g</span><span style="--i:8">a</span><span style="--i:9">r</span><span style="--i:10">?</span></h1>
+    <button id="btnCores" type="button" aria-label="Cores do portal" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2 0-1.4-1.2-1.6-1.2-3 0-1.1.9-2 2-2H17a4 4 0 0 0 4-4c0-4-4-7-9-7Z"/><circle cx="7.5" cy="11" r="1.3" fill="currentColor"/><circle cx="10" cy="7" r="1.3" fill="currentColor"/><circle cx="15" cy="7" r="1.3" fill="currentColor"/></svg></button>
+  </div>
+  <div id="painelCores" hidden><p>Cores (vale também no Pé na Tábua)</p><div id="seletorCores"></div></div>
   <div class="sala">
     <div class="cena">
       <div class="rodape"></div>
