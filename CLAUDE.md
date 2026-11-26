@@ -21,3 +21,10 @@
   `/forma-palavras/js/avatar.js`, `boneco-vivo.js` e `boneco-editor.js`. O perfil é um só
   (Firebase `cacapalavras/profiles/{uid}`), então personalizar aqui muda em todos os jogos.
 - Jogo novo: um bloco `<a class="jogo" data-jogo=...>` no index.html e as falas dele no hub.js.
+
+## Compartilhar
+
+- Botão de compartilhar no topo (esquerda) e o cartão "Chama alguém pra jogar" (WhatsApp/compartilhar + copiar link).
+  No celular usa a lista de apps do sistema; no PC abre o WhatsApp Web.
+- A prévia do link (WhatsApp etc.) vem das tags `og:` no `<head>` e da imagem `site/compartilhar.jpg` (1200x630, < 300 KB).
+  Mudou a imagem? Troque o nome do arquivo (o WhatsApp guarda a prévia antiga por um tempo).

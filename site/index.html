@@ -4,7 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#eaf5ff">
-<title>Jogos — escolha um</title>
+<title>Bora jogar? 🎮 Joguinhos pra jogar junto</title>
+<!-- prévia bonitinha quando compartilha (WhatsApp, Telegram, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bora jogar?">
+<meta property="og:url" content="https://justletmein2.github.io/">
+<meta property="og:title" content="Bora jogar? 🎮">
+<meta property="og:description" content="Joguinhos pra jogar junto pelo celular: Palhetada, Torre Bamba, Forma Palavras, Pé na Tábua e Cripta de Cristal. É só abrir e chamar a galera!">
+<meta property="og:image" content="https://justletmein2.github.io/compartilhar.jpg">
+<meta property="og:image:secure_url" content="https://justletmein2.github.io/compartilhar.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bora jogar? Os 5 joguinhos: Palhetada, Torre Bamba, Forma Palavras, Pé na Tábua e Cripta de Cristal">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://justletmein2.github.io/compartilhar.jpg">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -31,6 +46,16 @@
   @keyframes ola { 0%, 60%, 100% { transform: translateY(0) rotate(0); } 20% { transform: translateY(-10px) rotate(-6deg); } 35% { transform: translateY(2px) rotate(3deg); } }
   #btnCores { position: absolute; right: 12px; top: max(14px, env(safe-area-inset-top)); width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--p-borda);
     background: var(--p-painel); color: var(--p-a1); display: grid; place-items: center; cursor: pointer; box-shadow: 0 3px 0 var(--p-borda); }
+  #btnCompartilhar { position: absolute; left: 12px; top: max(14px, env(safe-area-inset-top)); width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--p-borda);
+    background: var(--p-painel); color: var(--p-a1); display: grid; place-items: center; cursor: pointer; box-shadow: 0 3px 0 var(--p-borda); }
+  .convite { margin: 22px 14px 0; padding: 16px; border-radius: 18px; background: var(--p-painel); border: 2px solid var(--p-borda); text-align: center; }
+  .convite b { display: block; font-size: 17px; font-weight: 900; color: var(--p-a1); }
+  .convite p { font-size: 14px; font-weight: 700; color: var(--p-suave); margin: 4px 0 12px; }
+  .convite .botoes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .convite button { border: 0; font: inherit; font-weight: 900; font-size: 16px; min-height: 48px; padding: 12px 18px; border-radius: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  #compartilhar { background: #25d366; color: #fff; box-shadow: 0 4px 0 #128c4a; }
+  #copiarLink { background: var(--p-sec); color: var(--p-texto); box-shadow: 0 4px 0 var(--p-borda); }
+  .convite button:active { transform: translateY(2px); box-shadow: none; }
   #painelCores { margin: 8px 14px 0; padding: 10px; border-radius: 16px; background: var(--p-painel); border: 2px solid var(--p-borda); text-align: center; }
   #painelCores[hidden] { display: none; }
   #painelCores p { font-weight: 900; font-size: 13px; color: var(--p-suave); margin-bottom: 8px; }
@@ -124,6 +149,7 @@
 <div class="pagina">
   <div class="cabeca">
     <h1 aria-label="Bora jogar?"><span style="--i:0">B</span><span style="--i:1">o</span><span style="--i:2">r</span><span style="--i:3">a</span><span style="--i:4">&nbsp;</span><span style="--i:5">j</span><span style="--i:6">o</span><span style="--i:7">g</span><span style="--i:8">a</span><span style="--i:9">r</span><span style="--i:10">?</span></h1>
+    <button id="btnCompartilhar" type="button" aria-label="Compartilhar os jogos"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg></button>
     <button id="btnCores" type="button" aria-label="Cores do portal" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2 0-1.4-1.2-1.6-1.2-3 0-1.1.9-2 2-2H17a4 4 0 0 0 4-4c0-4-4-7-9-7Z"/><circle cx="7.5" cy="11" r="1.3" fill="currentColor"/><circle cx="10" cy="7" r="1.3" fill="currentColor"/><circle cx="15" cy="7" r="1.3" fill="currentColor"/></svg></button>
   </div>
   <div id="painelCores" hidden><p>Cores (vale também no Pé na Tábua)</p><div id="seletorCores"></div></div>
@@ -265,6 +291,14 @@
     </button>
   </main>
   <button id="btnPersonalizar" hidden></button>
+  <section class="convite">
+    <b>💌 Chama alguém pra jogar</b>
+    <p>Manda o link pros amigos: dá pra jogar junto, cada um no seu celular.</p>
+    <div class="botoes">
+      <button id="compartilhar" type="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.6-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2.1.7 2.8.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.3-.5-.4Z"/></svg>Compartilhar</button>
+      <button id="copiarLink" type="button">🔗 Copiar link</button>
+    </div>
+  </section>
   <section id="cartaoInstalar" class="instalar-cartao">
     <b>📲 Coloque os jogos na tela de início</b>
     <p>Vira um ícone no celular, igual app, e abre sem a barra do navegador.</p>
@@ -290,6 +324,34 @@
   </div>
 </div>
 <script type="module" src="hub.js"></script>
+<script>
+  // compartilhar: no celular abre a lista de apps (WhatsApp etc.); no PC abre o WhatsApp Web
+  (() => {
+    const URL_JOGOS = 'https://justletmein2.github.io/';
+    const TEXTO = '🎮 Bora jogar? Fiz uns joguinhos pra gente jogar junto pelo celular:\n🎸 Palhetada · 🧱 Torre Bamba · 🔤 Forma Palavras · 🏎️ Pé na Tábua · 🔮 Cripta de Cristal\n\nÉ só abrir 👇';
+    const avisar = msg => {
+      let t = document.getElementById('avisinho');
+      if (!t) { t = document.createElement('div'); t.id = 'avisinho';
+        t.style.cssText = 'position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#12233f;color:#fff;font:900 15px Nunito,sans-serif;padding:12px 18px;border-radius:14px;z-index:9;box-shadow:0 6px 20px rgba(0,0,0,.25)';
+        document.body.appendChild(t); }
+      t.textContent = msg; t.hidden = false; clearTimeout(t._t); t._t = setTimeout(() => { t.hidden = true; }, 2200);
+    };
+    async function compartilhar() {
+      if (navigator.share) {
+        try { await navigator.share({ title: 'Bora jogar? 🎮', text: TEXTO, url: URL_JOGOS }); return; }
+        catch (e) { if (e && e.name === 'AbortError') return; }
+      }
+      window.open('https://wa.me/?text=' + encodeURIComponent(TEXTO + '\n' + URL_JOGOS), '_blank');
+    }
+    async function copiar() {
+      try { await navigator.clipboard.writeText(URL_JOGOS); avisar('Link copiado! 🔗'); }
+      catch { prompt('Copie o link:', URL_JOGOS); }
+    }
+    document.getElementById('compartilhar').addEventListener('click', compartilhar);
+    document.getElementById('btnCompartilhar').addEventListener('click', compartilhar);
+    document.getElementById('copiarLink').addEventListener('click', copiar);
+  })();
+</script>
 <script>
   // vira "app": ícone na tela do celular, abre sem a barra do navegador
   if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
